@@ -1,0 +1,2 @@
+# Preserve published bytes so RELEASE-MANIFEST hashes survive clone/checkout.
+* -text

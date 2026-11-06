@@ -1,0 +1,2 @@
+# Optional read-only STEP section rendering; supplied separately from the skill.
+cadquery-ocp>=7.7,<8

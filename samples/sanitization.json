@@ -1,0 +1,38 @@
+{
+  "synthetic": true,
+  "private_source_loaded": false,
+  "intended_use": "parser/load smoke test only; no usable optical design",
+  "surface_count": 13,
+  "all_inter_surface_spacings_zero": true,
+  "image_trailing_thickness": "OpticStudio infinity sentinel; no following physical interval",
+  "all_materials_removed": true,
+  "all_surface_comments_removed": true,
+  "field_xy": [
+    [
+      0.0,
+      0.0
+    ]
+  ],
+  "aperture_type": "EntrancePupilDiameter",
+  "aperture_diameter_mm": 0.1,
+  "stop_semi_diameter_mm": 0.05,
+  "placeholder_wavelength_um": 0.55,
+  "weight": 1,
+  "source_optimization_restored": false,
+  "fictitious_shuffled_radii_mm": [
+    -110.0,
+    -60.0,
+    130.0,
+    -150.0,
+    85.0,
+    -200.0,
+    175.0,
+    42.0,
+    -25.0,
+    18.0
+  ],
+  "sha256": {
+    "sanitized-shuffled.zos": "22b14a22cc18cd4b456d76faf25b974062f9002a662dce7d5dd3ed767a296993",
+    "sanitized-shuffled.zmx": "8cd2c9ac3e4ccf4b4aa4466e754f8a402aebf745f2dc8150f37b80a6643a6fe3"
+  }
+}

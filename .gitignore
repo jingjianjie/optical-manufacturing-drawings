@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.pdfout/
+demo-archive/
+demo-project/
+demo-layout.png
+build/
+dist/
+*.zip

@@ -1,0 +1,8 @@
+# Offline DXF, vector PDF and PDF proof rendering. Tested on Python 3.11.
+numpy>=1.24,<3
+ezdxf>=1.4,<2
+matplotlib>=3.7,<4
+fonttools>=4.40,<5
+Pillow>=9,<13
+pypdf>=4,<7
+pypdfium2>=4,<6
