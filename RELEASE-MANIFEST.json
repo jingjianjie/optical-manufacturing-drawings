@@ -14,9 +14,16 @@
     "cad/scripts/cad.py": "2cd99485610b4f313482e8f259e299f45b5c417d92eb2538b91e8c16920e32fc",
     "cad/scripts/CadBridge/CadBridge.csproj": "833606009d1769d642799b2e206d0d5466f2ef118024ac12d4e23fb9e7835a04",
     "cad/scripts/CadBridge/Program.cs": "1911257e640bfaa07fd2673c815f984f93240351943ea82b3971faed2493d439",
+    "docs/previews/complete.pdf": "48cd2331fc5ec4a5bfe08600015343ca05b4e8ecd7b895dc118852414dae85c6",
+    "docs/previews/PAIR.png": "80110cb57613c5f6a1b9740e27623dd189bf5742383111834a431d61adac3611",
+    "docs/previews/PAIR_A.png": "876311b9075e30137bcd3af5fe033bf385871a4869dcb69609c763fbc094c9ae",
+    "docs/previews/PAIR_B.png": "ae0fb82857df7d2116be83a4a02bb8b38ea97f8a4ff0d3f10449b76f47a0be9e",
+    "docs/previews/SINGLET.png": "01529d07f0926c5c9b7d3c83193c4a260c813246aab01af7b773f0c320746570",
     "LICENSE": "b20aff160a31da4a405f96f1aeba43f21d661b1d221e705eafc646c8af31da04",
-    "README.md": "62921e1f8cacdd4106f18c377af649251c39f0b9ace7d8e6bd9dca480e70d8a9",
+    "prompts/system.md": "3e52cd9a0cc1b957ea6c1ccb18fd2e3874f458e7b578cb152f814eaab7ddb15b",
+    "README.md": "7e668f2fde90cbe31a6e0ca5bf5e6c5888b061180ff0c6c7e4360946be8cfacd",
     "references/api-alignment.md": "5077667ccfa30c871a3499c1486868928058300083d40ad7cb2816bc0b15502c",
+    "references/default-precision.md": "b1264c5a9ed99f28796f80bd487bf85d62759d4fe39fff6b3c25cd3c6affb0a7",
     "references/environment.md": "246d61b739db8e6da3a75effea4824212894ac912a381c96abe6bea2e845504f",
     "references/execution-fixes.md": "3dcb0f8ce747ee2395d4a4a4c7ae95a0631e20994d94e3e5d7ff1bdc06d2af4e",
     "references/execution-workflow.md": "ce53f7a0b5b599a919d9b2daf3396879be986a447768fe9b3800655656169690",
@@ -51,16 +58,16 @@
     "scripts/page_renderer.py": "659426d6a7dd6124e579fede1664527058ccc017ac7400c4bd6a7e0525b553f5",
     "scripts/pdf_export.py": "1c914fa1b2761a97becac032739df662e4e7417a7e4865969b31b5f2628b1e0b",
     "scripts/profile_geometry.py": "7e5af6fb373e55377619812d83d42e7e1c3c6652d904fa5eef7494121ba58c9c",
-    "scripts/release.py": "3b247c59b1438695cdcd19aacfe38e3493ba171e4cc76813f87ee29b7e46ecc8",
+    "scripts/release.py": "eb3be28eea4fa20a8124c7254a76bd3c8e535c5acac65f038996462611bdc967",
     "scripts/run_checked.py": "fc39646b3388faaaf1de48caf8ba227a15062c69d7a2b450d06a24c008ea5e33",
     "scripts/step_section.py": "f39292284e20ad22e81f99adce7370b75a4aed20ed1b130b8e772b34c889f146",
     "scripts/symbol_blocks.py": "e2f6ea1e58edd00e7075113cbbf442e29b286d4a80466970cbbf6f61faf9bb84",
     "scripts/system_layout.py": "4a6a72df11d6a103de4c8ac8b1b25e9c9a64b0a02ae0be6e7126b204c07493eb",
     "scripts/zos_export.py": "f96df844c7afee55d24dd38e7256446586e13cfaaad1511800f0cae5a847e930",
     "scripts/zos_read.py": "784c5172845815ca2e3ed23603799c7dd04938f25ccf8f01706b801336969750",
-    "SKILL.md": "625f76a83ae40babf97d0ae1fba0752ba9625e48263ab412b64b066ac745ed89",
+    "SKILL.md": "e74b081ea642ed08cf7621facaba6598c6aec288e3d4b035bc969328a4e91834",
     "tests/smoke.py": "8905117a716d7e49cc52ec5b10df0b37713035209b55e5715a3f6fecec259bfb",
-    "THIRD_PARTY.md": "59bf850d9ea6db4567466c01ab8892683f394c1514aebd0c2ad0b0c6b62a53f2"
+    "THIRD_PARTY.md": "5e353072cb821df9b1295a0013d1b4a257a6873abc79dadaf92420fc1fa28978"
   },
-  "policy": "Public source and synthetic sanitized parser sample only"
+  "policy": "Public source, generated synthetic previews and sanitized parser sample only"
 }

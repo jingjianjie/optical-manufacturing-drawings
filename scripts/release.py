@@ -11,9 +11,9 @@ def selected(root=ROOT):
         if not p.is_file():continue
         rel=p.relative_to(root);parts=rel.parts
         if any(x in ['__pycache__','.pdfout','bin','obj','.venv'] for x in parts):continue
-        good=(rel.as_posix() in TOP or (parts[0] in ['references','scripts','tests'] and p.suffix in ['.md','.py'])
+        good=(rel.as_posix() in TOP or (parts[0] in ['references','scripts','tests','prompts'] and p.suffix in ['.md','.py'])
               or (parts[0]=='cad' and p.suffix in ['.md','.py','.cs','.csproj'])
-              or rel.as_posix() in ['assets/drawing-defaults.json','assets/a4-frame/generic-a4.dxf','assets/symbols/optical-house-symbols.dxf','samples/README.md','samples/sanitized-shuffled.zos','samples/sanitized-shuffled.zmx','samples/sanitization.json'])
+              or rel.as_posix() in ['assets/drawing-defaults.json','assets/a4-frame/generic-a4.dxf','assets/symbols/optical-house-symbols.dxf','samples/README.md','samples/sanitized-shuffled.zos','samples/sanitized-shuffled.zmx','samples/sanitization.json','docs/previews/SINGLET.png','docs/previews/PAIR_A.png','docs/previews/PAIR_B.png','docs/previews/PAIR.png','docs/previews/complete.pdf'])
         if good:files.append(p)
     return sorted(files)
 
@@ -21,7 +21,7 @@ def audit(files,root=ROOT):
     errors=[]
     for p in files:
         rel=p.relative_to(root).as_posix()
-        if p.suffix=='.zos':continue  # Explicit synthetic binary, paired with checked ZMX and hashes.
+        if p.suffix in ['.zos','.png','.pdf']:continue  # Explicitly allowlisted synthetic samples/previews only.
         raw=p.read_bytes();s=raw.decode('utf-16') if raw[:2] in [b'\xff\xfe',b'\xfe\xff'] else raw.decode('utf-8-sig')
         if re.search(r'(?i)(?<![a-z])[a-z]:[\\/](?!/)',s):errors.append(rel+': absolute drive path')
         if rel!='scripts/release.py' and re.search(r'(?i)(/Users/|/home/|Users[\\/]+win|\.agents[\\/]+skills|replay_tests|R13_|VR66_|orca-paste)',s):errors.append(rel+': private workspace reference')
