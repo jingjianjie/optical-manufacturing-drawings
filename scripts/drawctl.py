@@ -4,6 +4,7 @@ No automatic optical optimization, installation, API connection or fabricated re
 import argparse,copy,hashlib,json,math,shutil,time,zipfile
 from font_support import resolve_font, register_font
 from pathlib import Path
+from technical_spec import effective_spec, update_spec, TEXT_ASSET
 
 HERE=Path(__file__).resolve().parent
 SKILL=HERE.parent
@@ -19,7 +20,10 @@ def safe_id(value):
  if not value or Path(value).name!=value or any(c in value for c in '/\\:'):raise ValueError('page id must be a plain filename stem')
  return value
 def artifact_paths(root,pid):return [root/'dxf'/f'{pid}.dxf',root/'preview'/f'{pid}.png']
-def engine_hash(names):return digest({n:sha(HERE/n) for n in sorted(set(names)|{'drawctl.py','symbol_blocks.py','font_support.py'})})
+def engine_hash(names):
+ values={n:sha(HERE/n) for n in sorted(set(names)|{'drawctl.py','symbol_blocks.py','page_policy.py','technical_spec.py','font_support.py'})}
+ values['technical-text.json']=sha(TEXT_ASSET)
+ return digest(values)
 
 def initialize(source,target,title=None,font_file=None,defaults=None):
  source=source.resolve();target=target.resolve()
@@ -57,6 +61,9 @@ def initialize(source,target,title=None,font_file=None,defaults=None):
  font_source=resolve_font(font_file)
  font=target/'local-fonts'/font_source.name;font.parent.mkdir(exist_ok=True);shutil.copy2(font_source,font)
  cfg={'schema':1,'title':title or source_files[0].stem.removesuffix('_source'),'drawing_prefix':(title or source_files[0].stem.removesuffix('_source'))+'-MFG','font_name':font.name,'font_file':font.relative_to(target).as_posix(),'dpi':180,'source':'inputs/'+source_name,'synthetic_example':source_name=='source.json','snapshot':'inputs/snapshot.json','template':'inputs/template.dxf','source_sha256':sha(target/'inputs'/source_name),'snapshot_sha256':sha(target/'inputs/snapshot.json'),'evidence':[{'path':n,'sha256':sha(target/n)} for n in evidence], 'attachments':[dict(e,sha256=sha(target/e['path'])) for e in attachments], 'spec':read(defaults or SKILL/'assets/drawing-defaults.json'),'pages':items,'session_defaults_question':{'status':'not_recorded','source':'Record actual current-user confirmation or an explicit inherited confirmation; init does not assert approval'}}
+ # Explicit sample roles; real imports must supply confirmed face_types before build.
+ if cfg.get('synthetic_example'):
+  cfg['spec']['face_types']={'2':'coated','3':'coated','4':'coated','5':'cemented','6':'coated'}
  write(target/'project.json',cfg);return {'project':str(target/'project.json'),'pages':len(items),'attachments':len(attachments)}
 
 def merge(a,b):
@@ -134,10 +141,13 @@ def fresh_pages(path):
 def packet(path,pages=None):
  root,cfg,state=fresh_pages(path);ids=pages or [e['id'] for e in cfg['pages']]
  if set(ids)-set(state['pages']):raise ValueError('unknown page id')
- request={'source_sha256':cfg['source_sha256'],'snapshot_sha256':cfg['snapshot_sha256'],'pages':[{'id':p,'dxf':str((root/'dxf'/f'{p}.dxf').resolve()),'preview':str((root/'preview'/f'{p}.png').resolve()),'sha256':state['pages'][p]['outputs'][f'{p}.dxf']} for p in ids],'evidence':cfg['evidence'],'scope':'Explicit current review scope; source and geometry evidence identified separately','reviewers_required':2}
+ request={'source_sha256':cfg['source_sha256'],'snapshot_sha256':cfg['snapshot_sha256'],'pages':[{'id':p,'dxf':str((root/'dxf'/f'{p}.dxf').resolve()),'preview':str((root/'preview'/f'{p}.png').resolve()),'sha256':state['pages'][p]['outputs'][f'{p}.dxf']} for p in ids],'evidence':cfg['evidence'],'scope':'layout/spec change on frozen geometry; inherit same-source API/STEP evidence, inspect changed pages independently; no re-optimization','reviewers_required':2}
  request['scope']='layout/spec change on frozen geometry; inherit same-source API/STEP evidence; inspect changed pages independently'
  for p in request['pages']:
   p['preview_sha256']=state['pages'][p['id']]['outputs'][p['id']+'.png'];p['input_signature']=state['pages'][p['id']]['input']
+  item=next(e for e in cfg['pages'] if e['id']==p['id'])
+  p['effective_spec']=effective_spec(merge(cfg['spec'],item['spec_overrides']))
+ request['requirements_source']='effective_spec is the current project requirement; historic examples do not override it'
  write(root/'review/request.json',request)
  message='只读独立复核。实际查看以下每张PNG与对应DXF标注，检查引线、文字、公差与遮挡。源模型和机械快照未变；同版API/STEP证据在evidence，不需因布局修改重跑光学。若本次是首次完整图纸验收仍须各自直接API读取，不能把缓存当作独立API。不得读取另一位结论。返回逐页事实、问题与所见文件哈希。只读代理不写报告、不建文件锁，由主线程保存。\n'+json.dumps(request,ensure_ascii=False,indent=2)
  for name in ['A','B']:(root/'review'/f'prompt_{name}.txt').write_text(message,encoding='utf-8')
@@ -221,13 +231,14 @@ def package(path,proof=False):
 def main():
  ap=argparse.ArgumentParser(description=__doc__);sub=ap.add_subparsers(dest='command',required=True)
  p=sub.add_parser('init');p.add_argument('--archive',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--title');p.add_argument('--font',type=Path);p.add_argument('--defaults',type=Path)
- for name in ['plan','build','pdf','review-packet','contact','pack','record-review','set-layout','set-spec']:
+ for name in ['plan','build','pdf','review-packet','contact','pack','record-review','set-layout','set-spec','patch-spec','show-spec']:
   p=sub.add_parser(name);p.add_argument('project',type=Path)
   if name in ['build','review-packet','contact']:p.add_argument('--pages',nargs='+')
   if name in ['pdf','pack']:p.add_argument('--proof',action='store_true')
   if name=='record-review':p.add_argument('--reviewer',required=True);p.add_argument('--report',required=True,type=Path);p.add_argument('--pages',required=True,nargs='+')
   if name=='set-layout':p.add_argument('--page',required=True);p.add_argument('--key',required=True,choices=sorted(LAYOUT_KEYS));p.add_argument('--value',required=True,help='JSON number or [x,y]')
   if name=='set-spec':p.add_argument('--page',default='ALL');p.add_argument('--key',required=True,help='existing dotted spec key');p.add_argument('--value',required=True,help='JSON value; only after user has supplied the new requirement')
+  if name=='patch-spec':p.add_argument('--page',default='ALL');p.add_argument('--file',type=Path,required=True,help='UTF-8 JSON patch; apply all fields atomically')
  a=ap.parse_args()
  if a.command=='init':result=initialize(a.archive,a.out,a.title,a.font,a.defaults)
  elif a.command=='plan':result={'pages':plan(a.project)[-1],'optics':'frozen; no API/STEP/optimizer invoked'}
@@ -237,15 +248,14 @@ def main():
  elif a.command=='contact':result=contact(a.project,a.pages)
  elif a.command=='record-review':result=record_review(a.project,a.reviewer,a.report,a.pages)
  elif a.command=='pack':result=package(a.project,a.proof)
+ elif a.command=='show-spec':
+  root,cfg,_=load_project(a.project);result={p['id']:effective_spec(merge(cfg['spec'],p['spec_overrides'])) for p in cfg['pages']}
+ elif a.command=='patch-spec':
+  root,cfg,_=load_project(a.project);updated=update_spec(cfg,read(a.file),a.page);write(a.project,updated);result={'updated_spec':str(a.file),'page':a.page}
  elif a.command=='set-spec':
-  root,cfg,_=load_project(a.project);keys=a.key.split('.');prior=cfg['spec']
-  for k in keys:prior=prior[k]
-  value=json.loads(a.value)
-  if not isinstance(value,type(prior)) and not (isinstance(value,(float,int)) and isinstance(prior,(float,int))):raise ValueError('spec type mismatch')
-  if a.page=='ALL':dest=cfg['spec']
-  else:dest=next(p for p in cfg['pages'] if p['id']==a.page)['spec_overrides']
-  for k in keys[:-1]:dest=dest.setdefault(k,{})
-  dest[keys[-1]]=value;write(a.project,cfg);result={'updated_spec':a.key,'page':a.page,'value':value,'note':'no nominal optical dimensions changed; revised tolerances are not optical tolerance-analysis approval'}
+  root,cfg,_=load_project(a.project);value=json.loads(a.value);patch=value
+  for k in reversed(a.key.split('.')):patch={k:patch}
+  updated=update_spec(cfg,patch,a.page);write(a.project,updated);result={'updated_spec':a.key,'page':a.page,'value':value,'note':'no nominal optical dimensions changed'}
  else:
   root,cfg,_=load_project(a.project);item=next(p for p in cfg['pages'] if p['id']==a.page);v=json.loads(a.value)
   if a.key.endswith('_anchor') or a.key=='eta_text':

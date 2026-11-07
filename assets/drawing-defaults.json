@@ -1,5 +1,5 @@
 {
-  "scope": "EXAMPLE PROFILE: explicit project adoption required; not a standard or an optical tolerance analysis",
+  "scope": "user optical manufacturing drawing convention; explicit current instructions override",
   "source_date": "2026-11-06",
   "units": "mm",
   "blackening": {
@@ -20,7 +20,10 @@
     "incidence_deg": null,
     "polarization": null,
     "surface_selection": null,
-    "auto_apply_to_cemented_interfaces": false
+    "auto_apply_to_cemented_interfaces": false,
+    "include_max_reflectance": false,
+    "max_reflectance_percent": 0.25,
+    "max_comparison": "<"
   },
   "inspection_data": [
     "radius",
@@ -33,6 +36,14 @@
     "secure coating adhesion",
     "no coating debris on optical surfaces after coating"
   ],
+  "formatting_starting_points": {
+    "diameter_decimals": 2,
+    "center_thickness_decimals": 3,
+    "radius_decimals": 3,
+    "reference_edge_thickness_decimals": 3,
+    "focal_length_decimals": 3,
+    "increase_precision_to_preserve_frozen_nominal": false
+  },
   "mandatory_independent_reviewers": 2,
   "tolerances": {
     "diameter_upper_mm": 0.0,
@@ -41,7 +52,9 @@
     "thin_center_thickness_max_mm": 2.0,
     "thin_center_thickness_mm": 0.1,
     "unindicated_linear_mm": 0.05,
-    "angle_deg": 0.5
+    "angle_deg": 0.5,
+    "cemented_child_center_thickness_mm": 0.1,
+    "cemented_assembly_center_thickness_mm": 0.2
   },
   "material_requirements": {
     "delta_nD": "2B",
@@ -65,5 +78,5 @@
   },
   "session_start_question_required": true,
   "placeholders_allowed": false,
-  "profile_name": "visible-light-example"
+  "title_material_details": false
 }

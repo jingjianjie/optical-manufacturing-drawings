@@ -3,7 +3,7 @@ import argparse,hashlib,json,re,zipfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-TOP={'SKILL.md','README.md','LICENSE','THIRD_PARTY.md','requirements.txt','requirements-zos.txt','requirements-step.txt','.gitignore','.gitattributes'}
+TOP={'SKILL.md','GLOSSARY.md','README.md','LICENSE','THIRD_PARTY.md','requirements.txt','requirements-zos.txt','requirements-step.txt','.gitignore','.gitattributes'}
 
 def selected(root=ROOT):
     files=[]
@@ -12,6 +12,9 @@ def selected(root=ROOT):
         rel=p.relative_to(root);parts=rel.parts
         if any(x in ['__pycache__','.pdfout','bin','obj','.venv'] for x in parts):continue
         good=(rel.as_posix() in TOP or (parts[0] in ['references','scripts','tests','prompts'] and p.suffix in ['.md','.py'])
+              or (parts[0]=='verifier' and p.suffix in ['.md','.py'])
+              or (parts[0] in ['references','verifier'] and 'gb-reference-pages' in parts and p.suffix in ['.png','.json'])
+              or rel.as_posix()=='assets/technical-text.json'
               or (parts[0]=='cad' and p.suffix in ['.md','.py','.cs','.csproj'])
               or rel.as_posix() in ['assets/drawing-defaults.json','assets/a4-frame/generic-a4.dxf','assets/symbols/optical-house-symbols.dxf','samples/README.md','samples/sanitized-shuffled.zos','samples/sanitized-shuffled.zmx','samples/sanitization.json','docs/previews/SINGLET.png','docs/previews/PAIR_A.png','docs/previews/PAIR_B.png','docs/previews/PAIR.png','docs/previews/complete.pdf'])
         if good:files.append(p)
@@ -21,7 +24,7 @@ def audit(files,root=ROOT):
     errors=[]
     for p in files:
         rel=p.relative_to(root).as_posix()
-        if p.suffix in ['.zos','.png','.pdf']:continue  # Explicitly allowlisted synthetic samples/previews only.
+        if p.suffix in ['.zos','.png','.pdf']:continue  # Explicit allowlist includes attributed standard reference pages.
         raw=p.read_bytes();s=raw.decode('utf-16') if raw[:2] in [b'\xff\xfe',b'\xfe\xff'] else raw.decode('utf-8-sig')
         if re.search(r'(?i)(?<![a-z])[a-z]:[\\/](?!/)',s):errors.append(rel+': absolute drive path')
         if rel!='scripts/release.py' and re.search(r'(?i)(/Users/|/home/|Users[\\/]+win|\.agents[\\/]+skills|replay_tests|R13_|VR66_|orca-paste)',s):errors.append(rel+': private workspace reference')
@@ -39,7 +42,7 @@ def main():
     hashes={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     with zipfile.ZipFile(a.out,'w',zipfile.ZIP_DEFLATED) as z:
         for p in files:z.write(p,Path(ROOT.name)/p.relative_to(ROOT))
-        z.writestr(ROOT.name+'/RELEASE-MANIFEST.json',json.dumps({'license':'MIT','files':hashes,'policy':'public source and generated synthetic assets only'},indent=2))
+        z.writestr(ROOT.name+'/RELEASE-MANIFEST.json',json.dumps({'license':'MIT; standard reference pages retain third-party rights, see THIRD_PARTY.md','files':hashes,'policy':'allowlisted public source, synthetic assets and attributed standard reference pages'},indent=2))
     with zipfile.ZipFile(a.out) as z:
         assert z.testzip() is None
         for name,h in hashes.items():assert hashlib.sha256(z.read(ROOT.name+'/'+name)).hexdigest()==h

@@ -23,10 +23,10 @@ def create(out):
         p={'name':name,'front':front-1,'back':back-1,'radius':radius,'center_thickness':rows[front]['thickness']}
         for side,j,cutoff,sign in [('front',front,front_end,1),('back',back,back_end,-1)]:
             rc=radius-.2 if cutoff is None else cutoff;c=0 if rows[j]['radius'] is None else 1/rows[j]['radius']
-            p[side+'_face']={'surface':j-1,'curve_end':rc,'transition':0.,'plateau':float(sphere_sag(c,rc)),'outer_bevel':.2 if cutoff is None else 0.,'bevel_angle':45.,'inward':sign}
+            p[side+'_face']={'surface':j-1,'curve_end':rc,'transition':0.,'plateau':float(sphere_sag(c,rc)),'outer_bevel':.2,'bevel_angle':45.,'inward':sign}
             p[side+'_flat_land']=radius-p[side+'_face']['outer_bevel']-rc
         return p
-    parts=[part('SINGLET',2,3,9.),part('PAIR_positive',4,5,9.,back_end=9.),part('PAIR_negative',5,6,10.,front_end=9.)]
+    parts=[part('SINGLET',2,3,9.),part('PAIR_positive',4,5,9.,back_end=8.8),part('PAIR_negative',5,6,10.,front_end=9.)]
     m={'c':np.array([0 if r['radius'] is None else 1/r['radius'] for r in rows[1:]]),'t':np.array([r['thickness'] or 0 for r in rows[1:]])}
     for p in parts:
         y,a,b=profiles(m,p);p.update(edge_thickness=float(b[-1]-a[-1]),min_thickness=float(min(b-a)))

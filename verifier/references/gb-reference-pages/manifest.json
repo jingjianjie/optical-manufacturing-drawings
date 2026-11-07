@@ -1,0 +1,97 @@
+{
+  "standard": "GB/T 13323—2009 光学制图",
+  "source_description": "本地存档公开阅读页截图；非官方原生PDF。来源追溯见本目录README。",
+  "pages": [
+    {
+      "pdf_page": 6,
+      "printed_page": 3,
+      "title": "膜层与涂黑符号",
+      "file": "page-06.png",
+      "sha256": "8d9a69ab9d59437528d45ec17336635e1cbd108efc5a1e24b4f5d02ac0a19dd6"
+    },
+    {
+      "pdf_page": 7,
+      "printed_page": 4,
+      "title": "缺陷类别与胶合部件要求",
+      "file": "page-07.png",
+      "sha256": "0c89cd46c084914ce8411234fa876814eda4e779f2130b19df2a09224033d92e"
+    },
+    {
+      "pdf_page": 8,
+      "printed_page": 5,
+      "title": "胶合部件及零件视图",
+      "file": "page-08.png",
+      "sha256": "36971ae7d7c41441847facec17df18d02e93dc3557164761491f381c0d83ed6f"
+    },
+    {
+      "pdf_page": 10,
+      "printed_page": 7,
+      "title": "逐面材料列表与检验区域",
+      "file": "page-10.png",
+      "sha256": "eaf67a7754899740c8c6774b638402f13addbe5959ae57c92631854550ff1060"
+    },
+    {
+      "pdf_page": 12,
+      "printed_page": 9,
+      "title": "半径与公差表达",
+      "file": "page-12.png",
+      "sha256": "5ae88b494f56b8a40be9074aebcfab5c66662c7613ebbec0f4e59d61df7da622"
+    },
+    {
+      "pdf_page": 13,
+      "printed_page": 10,
+      "title": "厚度直径及凸凹对照",
+      "file": "page-13.png",
+      "sha256": "2b04548babe57294d8b373eedb01546f55459d2f648b601323891bab25ddb47d"
+    },
+    {
+      "pdf_page": 14,
+      "printed_page": 11,
+      "title": "边缘与倒角",
+      "file": "page-14.png",
+      "sha256": "2672d9347c469575faac1272354108b10dd9c29e58ef767ff91aa1ac10b7036b"
+    },
+    {
+      "pdf_page": 16,
+      "printed_page": 13,
+      "title": "材料与光学缺陷",
+      "file": "page-16.png",
+      "sha256": "5360ca909ef8be76ee299cf99590817e0ff3524d0e679150ba81d36b4a6f2bd4"
+    },
+    {
+      "pdf_page": 19,
+      "printed_page": 16,
+      "title": "胶合总图示例",
+      "file": "page-19.png",
+      "sha256": "67ffe9204b23bf841bbbbdc9c1f67964a04feafbc346b75f5837bcf67585e39a"
+    },
+    {
+      "pdf_page": 20,
+      "printed_page": 17,
+      "title": "球面单片示例",
+      "file": "page-20.png",
+      "sha256": "ef91db3dbd4c138e6841135e13dc7dbf81ae1858142e36fd007de3566748ab7f"
+    },
+    {
+      "pdf_page": 21,
+      "printed_page": 18,
+      "title": "待胶合子片示例",
+      "file": "page-21.png",
+      "sha256": "1bd1f977b49d141d4f8bbc94146b7bdd4ad4ab1150916a559fa01e5d5d0fa1f0"
+    },
+    {
+      "pdf_page": 28,
+      "printed_page": 25,
+      "title": "抛光与研磨表面结构",
+      "file": "page-28.png",
+      "sha256": "2b28959d377bd171c99fbb1a067c845058e8ef312fe7d0a79395e69fe50c31f3"
+    },
+    {
+      "pdf_page": 29,
+      "printed_page": 26,
+      "title": "P等级与Rq组合示例",
+      "file": "page-29.png",
+      "sha256": "614e7d6b429f65cec67fa25c9841933ca8348c94f71633821577b1b9d21944bf"
+    }
+  ]
+}

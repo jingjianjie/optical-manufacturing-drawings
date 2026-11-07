@@ -1,0 +1,29 @@
+{
+  "title": "技术要求",
+  "adhesive": "光敏胶",
+  "cemented_templates": [
+    "用{adhesive}胶合,胶合后要检验光圈",
+    "胶层应清洁,不允许有脏物,脏点等疵病,也不允许出现双像",
+    "镜片保护性倒角.",
+    "{coating_statement}"
+  ],
+  "single_templates": [
+    "{coating_statement}",
+    "{adhesion_statement}",
+    "{quality_statement}",
+    "{masking_statement}"
+  ],
+  "common_templates": [
+    "CT±{ct_tolerance:.3f}mm；未注线性±{linear_tolerance:.3f}mm；角度±{angle_tolerance:g}°。",
+    "各面倒角径向{chamfer_radial}mm，角度见图；{blackening_statement}"
+  ],
+  "adhesion_coated": "镀膜要镀牢,不允许有镀膜垃圾,镜片保护性倒角",
+  "adhesion_uncoated": "镜片保护性倒角；镀膜条款不适用",
+  "quality_coated": "镀膜后表面光洁度 {surface_quality}",
+  "quality_uncoated": "表面光洁度 {surface_quality}；本件不镀膜",
+  "masking_single": "通光区遮蔽，禁止涂墨污染。",
+  "masking_child": "胶合面不镀膜，胶合区及通光区遮蔽，禁止涂墨污染。",
+  "blackening_enabled": "外圆/指定平台涂黑，墨厚{ink_thickness:.3f}mm。",
+  "blackening_disabled": "本件不涂黑。",
+  "extra_templates": []
+}
